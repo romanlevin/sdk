@@ -40,13 +40,15 @@ pub fn parse<'a>(args: &'a ArgMatches<'_>) -> Service<'a> {
         ));
     } else if args.is_present("authentication") {
         return Service::Authentication;
-    } /*else if args.is_present("provider") {
+    }
+    /*else if args.is_present("provider") {
         return Service::Provider(provider::parse(
             &args
                 .subcommand_matches("provider")
                 .expect("Error parsing request"),
         ));
-    } */else {
+    } */
+    else {
         Service::Unknown
     }
 }

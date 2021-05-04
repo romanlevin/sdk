@@ -43,7 +43,7 @@ Implementation and message definition for extending DIDComm Messaging v2 using b
 
 ---
 
-## Motivation
+## Motivation 
 
 [DIDComm Messaging](https://identity.foundation/didcomm-messaging/spec/#purpose-and-scope) provides a secure, private communication methodology built atop the decentralized design of DIDs. The spec defines a concrete message definition using JSON notation, and allows for other protocols to be defined.
 This extension of the DIDComm Messaging protocol introduces [Protocol Buffers](https://developers.google.com/protocol-buffers) (Protobuf) as a language defintion for the message contracts.
