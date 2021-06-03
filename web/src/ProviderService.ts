@@ -12,7 +12,7 @@ export class TrinsicProviderService extends ServiceBase {
   // channel: Channel;
   client: ProviderClient;
 
-  constructor(serviceAddress: string = "https://localhost:5000") {
+  constructor(serviceAddress: string = "http://localhost:5000") {
     super();
 
     // let credentials = ChannelCredentials.createInsecure();

@@ -27,7 +27,7 @@ export class TrinsicWalletService extends ServiceBase {
   client: WalletClient;
   credentialClient: CredentialClient;
 
-  constructor(serviceAddress: string = "https://localhost:5000") {
+  constructor(serviceAddress: string = "http://localhost:5000") {
     super();
 
     // let credentials = ChannelCredentials.createInsecure();
