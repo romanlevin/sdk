@@ -3,8 +3,8 @@ import okapi from "@trinsic/okapi";
 import { EncryptedMessage } from './proto/pbmse/pbmse_pb';
 import { Struct } from 'google-protobuf/google/protobuf/struct_pb';
 import ServiceBase from "./ServiceBase";
-import { WalletClient } from "./proto/WalletService_grpc_web_pb";
-import { CredentialClient } from "./proto/IssuerService_grpc_web_pb";
+import { WalletClient } from "./proto/WalletServiceServiceClientPb";
+import { CredentialClient } from "./proto/IssuerServiceServiceClientPb";
 import {
   ConnectRequest,
   GetProviderConfigurationRequest,
@@ -27,14 +27,14 @@ export class TrinsicWalletService extends ServiceBase {
   client: WalletClient;
   credentialClient: CredentialClient;
 
-  constructor(serviceAddress: string = "localhost:5000") {
+  constructor(serviceAddress: string = "https://localhost:5000") {
     super();
 
     // let credentials = ChannelCredentials.createInsecure();
     // let channel = new Channel(serviceAddress, credentials, {});
     // this.channel = channel;
-    this.client = new WalletClient(serviceAddress, null, null);
-    this.credentialClient = new CredentialClient(serviceAddress, null, null);
+    this.client = new WalletClient(serviceAddress);
+    this.credentialClient = new CredentialClient(serviceAddress);
   }
 
   // setChannel(channel: Channel) {
@@ -48,7 +48,7 @@ export class TrinsicWalletService extends ServiceBase {
   public registerOrConnect(email: string): Promise<ConnectResponse> {
     let request = new ConnectRequest();
     request.setEmail(email);
-    
+
     return new Promise((resolve, reject) => {
       this.client.connectExternalIdentity(request, {}, (error, response) => {
         if (error) {
@@ -83,11 +83,11 @@ export class TrinsicWalletService extends ServiceBase {
     let resolveRequest = new okapi.ResolveRequest();
     resolveRequest.setDid(configuration.getKeyAgreementKeyId());
     let resolveResponse = okapi.DIDKey.resolve(resolveRequest);
-    
+
     let providerExchangeKey = resolveResponse
       .getKeysList()
       .find((x) => x.getKid() === configuration.getKeyAgreementKeyId());
-    
+
     if (providerExchangeKey === undefined)
       throw new Error("Key agreement key not found");
 
@@ -96,10 +96,10 @@ export class TrinsicWalletService extends ServiceBase {
     keyRequest.setKeyType(okapi.KeyType.ED25519);
     let myKey = okapi.DIDKey.generate(keyRequest);
     let myExchangeKey = myKey.getKeyList().find((x) => x.getCrv() === "X25519");
-    
+
     if (myExchangeKey === undefined)
       throw new Error("Key agreement key not found");
-    
+
     let myDidDocument = myKey.getDidDocument().toJavaScript();
     // Create an encrypted message
     let packRequest = new okapi.PackRequest();
@@ -125,7 +125,7 @@ export class TrinsicWalletService extends ServiceBase {
             console.error(error.message)
             reject(error.message);
           }
-          
+
           let unpackRequest = new okapi.UnpackRequest();
           unpackRequest.setMessage(response);
           unpackRequest.setReceiverKey(myExchangeKey);

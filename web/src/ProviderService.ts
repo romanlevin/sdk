@@ -1,5 +1,5 @@
 import ServiceBase from "./ServiceBase";
-import { ProviderClient } from "./proto/ProviderService_grpc_web_pb";
+import { ProviderClient } from "./proto/ProviderServiceServiceClientPb";
 import {
   InvitationStatusRequest,
   InvitationStatusResponse,
@@ -12,7 +12,7 @@ export class TrinsicProviderService extends ServiceBase {
   // channel: Channel;
   client: ProviderClient;
 
-  constructor(serviceAddress: string = "localhost:5000") {
+  constructor(serviceAddress: string = "https://localhost:5000") {
     super();
 
     // let credentials = ChannelCredentials.createInsecure();
