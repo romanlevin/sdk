@@ -2,14 +2,27 @@ use super::super::parser::provider::*;
 use crate::services::config::*;
 use tonic::transport::Channel;
 use trinsic::proto::trinsic_services::{provider_client::ProviderClient, InviteRequest};
+use trinsic::proto::trinsic_services::{trust_registry_service_client, RegisterAuthorityRequest};
 use trinsic::{invite_request::ContactMethod, proto::trinsic_services};
 
 #[allow(clippy::unit_arg)]
 pub(crate) fn execute(args: &Command, config: Config) -> Result<(), Error> {
     match args {
         Command::Invite(args) => Ok(invite(args, config)),
-        _ => Err(Error::UnknownCommand),
+        Command::Register(args) => Ok(register(args, config)),
+        _ => Err(Error::UnknownCommand)
     }
+}
+#[tokio::main]
+async fn register(args: &RegisterAuthorityArgs, config: Config) {
+    // let channel = Channel::from_shared(config.server.address.to_string())
+    //     .unwrap()
+    //     .connect()
+    //     .await
+    //     .expect("Unable to connect to server");
+    // 
+    // let mut client = TrustRegistryService::new(channel);
+    println!("{} {}", args.id.unwrap_or("Nothing"), args.name.unwrap_or("Nothing"));
 }
 
 #[tokio::main]

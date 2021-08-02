@@ -15,6 +15,12 @@ pub fn parse<'a>(args: &'a ArgMatches<'_>) -> Command<'a> {
                 .subcommand_matches("invite")
                 .expect("Error parsing request"),
         )
+    } else if args.is_present("register") {
+        register(
+            &args
+                .subcommand_matches("register")
+                .expect("Error parsing request")
+        )
     } else {
         panic!("Unrecognized command")
     }
@@ -84,6 +90,14 @@ fn invite<'a>(args: &'a ArgMatches<'_>) -> Command<'a> {
     })
 }
 
+fn register<'a>(args: &'a ArgMatches<'_>) -> Command<'a> {
+    assert!(args.is_present("id"));
+    Command::Register(RegisterAuthorityArgs {
+        id: args.value_of("id"),
+        name: args.value_of("name")
+    })
+}
+
 #[derive(Debug, PartialEq)]
 pub enum Command<'a> {
     CreateOrganization(CreateOrganizationArgs<'a>),
@@ -91,6 +105,13 @@ pub enum Command<'a> {
     InvitationStatus,
     CreateCredentialTemplate,
     ListCredentialTemplates,
+    Register(RegisterAuthorityArgs<'a>)
+}
+
+#[derive(Debug, PartialEq)]
+pub struct RegisterAuthorityArgs<'a> {
+    pub id: Option<&'a str>,
+    pub name: Option<&'a str>
 }
 
 #[derive(Debug, PartialEq)]

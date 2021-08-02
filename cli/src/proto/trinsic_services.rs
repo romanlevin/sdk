@@ -979,3 +979,285 @@ pub mod credential_templates_client {
         }
     }
 }
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AddTrustRegistryRequest {
+    #[prost(string, tag = "1")]
+    pub trust_registry: ::prost::alloc::string::String,
+    #[prost(string, tag = "2")]
+    pub did_uri: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    #[prost(string, tag = "4")]
+    pub website: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AddTrustRegistryResponse {
+    #[prost(enumeration = "ResponseStatus", tag = "1")]
+    pub status: i32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveTrustRegistryRequest {
+    #[prost(string, tag = "1")]
+    pub trust_registry_uri: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RemoveTrustRegistryResponse {
+    #[prost(enumeration = "ResponseStatus", tag = "1")]
+    pub status: i32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTrustRegistriesRequest {}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListTrustRegistriesResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub registries: ::prost::alloc::vec::Vec<TrustRegistry>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct TrustRegistry {
+    #[prost(string, tag = "1")]
+    pub trust_registry: ::prost::alloc::string::String,
+    #[prost(string, tag = "3")]
+    pub description: ::prost::alloc::string::String,
+    #[prost(string, tag = "4")]
+    pub website: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RegisterAuthorityRequest {
+    #[prost(enumeration = "AuthorityAction", repeated, tag = "20")]
+    pub action: ::prost::alloc::vec::Vec<i32>,
+    #[prost(oneof = "register_authority_request::Authority", tags = "1, 2")]
+    pub authority: ::core::option::Option<register_authority_request::Authority>,
+    #[prost(oneof = "register_authority_request::Template", tags = "10, 11")]
+    pub template: ::core::option::Option<register_authority_request::Template>,
+}
+/// Nested message and enum types in `RegisterAuthorityRequest`.
+pub mod register_authority_request {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Authority {
+        #[prost(string, tag = "1")]
+        DidUri(::prost::alloc::string::String),
+        #[prost(string, tag = "2")]
+        X509Cert(::prost::alloc::string::String),
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Template {
+        #[prost(string, tag = "10")]
+        TemplateUri(::prost::alloc::string::String),
+        #[prost(string, tag = "11")]
+        ContextUri(::prost::alloc::string::String),
+    }
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct RegisterAuthorityResponse {
+    #[prost(enumeration = "ResponseStatus", tag = "1")]
+    pub status: i32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnregisterAuthorityRequest {
+    #[prost(oneof = "unregister_authority_request::Authority", tags = "1, 2")]
+    pub authority: ::core::option::Option<unregister_authority_request::Authority>,
+    #[prost(oneof = "unregister_authority_request::Template", tags = "10, 11")]
+    pub template: ::core::option::Option<unregister_authority_request::Template>,
+}
+/// Nested message and enum types in `UnregisterAuthorityRequest`.
+pub mod unregister_authority_request {
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Authority {
+        #[prost(string, tag = "1")]
+        DidUri(::prost::alloc::string::String),
+        #[prost(string, tag = "2")]
+        X509Cert(::prost::alloc::string::String),
+    }
+    #[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Template {
+        #[prost(string, tag = "10")]
+        TemplateUri(::prost::alloc::string::String),
+        #[prost(string, tag = "11")]
+        ContextUri(::prost::alloc::string::String),
+    }
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct UnregisterAuthorityResponse {
+    #[prost(enumeration = "ResponseStatus", tag = "1")]
+    pub status: i32,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckAuthorityRequest {
+    #[prost(string, tag = "1")]
+    pub authority: ::prost::alloc::string::String,
+    /// Optional. If not specified, default EGF will be used
+    #[prost(string, tag = "2")]
+    pub trust_registry: ::prost::alloc::string::String,
+    #[prost(enumeration = "AuthorityAction", tag = "3")]
+    pub action: i32,
+    /// Optional. If not specified, will return all authorized templates for this issuer
+    /// under the specified EGF
+    #[prost(string, tag = "4")]
+    pub template_url: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CheckAuthorityResponse {
+    #[prost(string, tag = "1")]
+    pub authority: ::prost::alloc::string::String,
+    #[prost(message, repeated, tag = "2")]
+    pub result: ::prost::alloc::vec::Vec<AuthorityEntry>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct AuthorityEntry {
+    #[prost(string, tag = "1")]
+    pub template_url: ::prost::alloc::string::String,
+    #[prost(enumeration = "AuthorityAction", tag = "2")]
+    pub action: i32,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
+#[repr(i32)]
+pub enum AuthorityAction {
+    Issue = 0,
+    Verify = 1,
+}
+#[doc = r" Generated client implementations."]
+pub mod trust_registry_service_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    pub struct TrustRegistryServiceClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl TrustRegistryServiceClient<tonic::transport::Channel> {
+        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> TrustRegistryServiceClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        #[doc = " Adds a trust registry defintion to the ecosystem"]
+        pub async fn add_trust_registry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::AddTrustRegistryRequest>,
+        ) -> Result<tonic::Response<super::AddTrustRegistryResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/trinsic.services.TrustRegistryService/AddTrustRegistry",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        pub async fn remove_trust_registry(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RemoveTrustRegistryRequest>,
+        ) -> Result<tonic::Response<super::RemoveTrustRegistryResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/trinsic.services.TrustRegistryService/RemoveTrustRegistry",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        pub async fn list_trust_registries(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListTrustRegistriesRequest>,
+        ) -> Result<tonic::Response<super::ListTrustRegistriesResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/trinsic.services.TrustRegistryService/ListTrustRegistries",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Registers an authoritative issuer with a credential template"]
+        pub async fn register_authority(
+            &mut self,
+            request: impl tonic::IntoRequest<super::RegisterAuthorityRequest>,
+        ) -> Result<tonic::Response<super::RegisterAuthorityResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/trinsic.services.TrustRegistryService/RegisterAuthority",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        #[doc = " Removes an authoritative issuer with a credential template from the trust registry"]
+        pub async fn unregister_authority(
+            &mut self,
+            request: impl tonic::IntoRequest<super::UnregisterAuthorityRequest>,
+        ) -> Result<tonic::Response<super::UnregisterAuthorityResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/trinsic.services.TrustRegistryService/UnregisterAuthority",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        pub async fn check_authority(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CheckAuthorityRequest>,
+        ) -> Result<tonic::Response<super::CheckAuthorityResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/trinsic.services.TrustRegistryService/CheckAuthority",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for TrustRegistryServiceClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for TrustRegistryServiceClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "TrustRegistryServiceClient {{ ... }}")
+        }
+    }
+}

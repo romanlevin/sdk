@@ -94,7 +94,7 @@ message AuthorityEntry {
     AuthorityAction action = 2;
 }
 
-service TrustRegistryRpc {
+service TrustRegistryService {
     // Adds a trust registry defintion to the ecosystem
     rpc AddTrustRegistry(AddTrustRegistryRequest) returns (AddTrustRegistryResponse);
 

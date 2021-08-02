@@ -352,6 +352,22 @@ subcommands:
         - list_credential_templates:
             about: "List credential templates"
             version: "0.1"
+        - register:
+            about: "Register an authority"
+            version: "0.1"
+            args:
+              - id:
+                  long: authority-id
+                  value_name: STRING
+                  help: add the authority id 
+                  takes_value: true
+                  required: false
+              - name:
+                  long: authority-name
+                  value_name: STRING
+                  help: add the authority name
+                  takes_value: true
+                  required: false
 args:
   - profile:
       long: profile
