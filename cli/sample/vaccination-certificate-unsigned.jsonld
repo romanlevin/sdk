@@ -9,6 +9,7 @@
       "VaccinationCertificate",
       "VerifiableCredential"
   ],
+  "schema": <uri>,
   "description": "COVID-19 Vaccination Certificate",
   "name": "COVID-19 Vaccination Certificate",
   "expirationDate": "2029-12-03T12:19:52Z",

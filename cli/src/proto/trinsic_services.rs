@@ -46,6 +46,21 @@ pub mod debugging_client {
                 http::uri::PathAndQuery::from_static("/trinsic.services.Debugging/CallEmpty");
             self.inner.unary(request.into_request(), path, codec).await
         }
+        pub async fn call_empty_auth(
+            &mut self,
+            request: impl tonic::IntoRequest<super::super::google::protobuf::Empty>,
+        ) -> Result<tonic::Response<super::super::google::protobuf::Empty>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/trinsic.services.Debugging/CallEmptyAuth");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
     }
     impl<T: Clone> Clone for DebuggingClient<T> {
         fn clone(&self) -> Self {
@@ -800,6 +815,167 @@ pub mod provider_client {
     impl<T> std::fmt::Debug for ProviderClient<T> {
         fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             write!(f, "ProviderClient {{ ... }}")
+        }
+    }
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCredentialTemplateRequest {
+    #[prost(message, optional, tag = "1")]
+    pub template: ::core::option::Option<CredentialTemplate>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CreateCredentialTemplateResponse {
+    #[prost(message, optional, tag = "1")]
+    pub template: ::core::option::Option<CredentialTemplate>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCredentialTemplateRequest {
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct GetCredentialTemplateResponse {
+    #[prost(string, tag = "1")]
+    pub status: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCredentialTemplatesRequest {
+    #[prost(string, tag = "1")]
+    pub query: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ListCredentialTemplatesResponse {
+    #[prost(message, repeated, tag = "1")]
+    pub templates: ::prost::alloc::vec::Vec<CredentialTemplate>,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCredentialTemplateRequest {
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DeleteCredentialTemplateResponse {
+    #[prost(string, tag = "1")]
+    pub status: ::prost::alloc::string::String,
+}
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct CredentialTemplate {
+    #[prost(string, tag = "1")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, repeated, tag = "4")]
+    pub contexts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, tag = "5")]
+    pub schema: ::prost::alloc::string::String,
+}
+#[doc = r" Generated client implementations."]
+pub mod credential_templates_client {
+    #![allow(unused_variables, dead_code, missing_docs)]
+    use tonic::codegen::*;
+    pub struct CredentialTemplatesClient<T> {
+        inner: tonic::client::Grpc<T>,
+    }
+    impl CredentialTemplatesClient<tonic::transport::Channel> {
+        #[doc = r" Attempt to create a new client by connecting to a given endpoint."]
+        pub async fn connect<D>(dst: D) -> Result<Self, tonic::transport::Error>
+        where
+            D: std::convert::TryInto<tonic::transport::Endpoint>,
+            D::Error: Into<StdError>,
+        {
+            let conn = tonic::transport::Endpoint::new(dst)?.connect().await?;
+            Ok(Self::new(conn))
+        }
+    }
+    impl<T> CredentialTemplatesClient<T>
+    where
+        T: tonic::client::GrpcService<tonic::body::BoxBody>,
+        T::ResponseBody: Body + HttpBody + Send + 'static,
+        T::Error: Into<StdError>,
+        <T::ResponseBody as HttpBody>::Error: Into<StdError> + Send,
+    {
+        pub fn new(inner: T) -> Self {
+            let inner = tonic::client::Grpc::new(inner);
+            Self { inner }
+        }
+        pub fn with_interceptor(inner: T, interceptor: impl Into<tonic::Interceptor>) -> Self {
+            let inner = tonic::client::Grpc::with_interceptor(inner, interceptor);
+            Self { inner }
+        }
+        pub async fn create(
+            &mut self,
+            request: impl tonic::IntoRequest<super::CreateCredentialTemplateRequest>,
+        ) -> Result<tonic::Response<super::CreateCredentialTemplateResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/trinsic.services.CredentialTemplates/Create",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        pub async fn get(
+            &mut self,
+            request: impl tonic::IntoRequest<super::GetCredentialTemplateRequest>,
+        ) -> Result<tonic::Response<super::GetCredentialTemplateResponse>, tonic::Status> {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/trinsic.services.CredentialTemplates/Get");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        pub async fn list(
+            &mut self,
+            request: impl tonic::IntoRequest<super::ListCredentialTemplatesRequest>,
+        ) -> Result<tonic::Response<super::ListCredentialTemplatesResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path =
+                http::uri::PathAndQuery::from_static("/trinsic.services.CredentialTemplates/List");
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+        pub async fn delete(
+            &mut self,
+            request: impl tonic::IntoRequest<super::DeleteCredentialTemplateRequest>,
+        ) -> Result<tonic::Response<super::DeleteCredentialTemplateResponse>, tonic::Status>
+        {
+            self.inner.ready().await.map_err(|e| {
+                tonic::Status::new(
+                    tonic::Code::Unknown,
+                    format!("Service was not ready: {}", e.into()),
+                )
+            })?;
+            let codec = tonic::codec::ProstCodec::default();
+            let path = http::uri::PathAndQuery::from_static(
+                "/trinsic.services.CredentialTemplates/Delete",
+            );
+            self.inner.unary(request.into_request(), path, codec).await
+        }
+    }
+    impl<T: Clone> Clone for CredentialTemplatesClient<T> {
+        fn clone(&self) -> Self {
+            Self {
+                inner: self.inner.clone(),
+            }
+        }
+    }
+    impl<T> std::fmt::Debug for CredentialTemplatesClient<T> {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+            write!(f, "CredentialTemplatesClient {{ ... }}")
         }
     }
 }

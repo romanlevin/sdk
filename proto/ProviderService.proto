@@ -51,7 +51,6 @@ message InvitationStatusResponse {
 }
 
 service Provider {
-
 //   rpc CreateOrganization(CreateOrganizationRequest) returns (CreateOrganizationResponse);
   rpc Invite(InviteRequest) returns (InviteResponse);
   rpc InviteWithWorkflow(InviteRequest) returns (InviteResponse);
