@@ -74,7 +74,7 @@ export class TrinsicWalletService extends ServiceBase {
     });
   }
 
-  public async createWallet(securityCode: string = null): Promise<WalletProfile> {
+  public async createWallet(securityCode?: string): Promise<WalletProfile> {
     // Fetch Server Configuration and find key to use
     // for generating shared secret for authenticated encryption
     let configuration = await this.getProviderConfiguration();
@@ -94,12 +94,12 @@ export class TrinsicWalletService extends ServiceBase {
 
     if (myExchangeKey === undefined) throw new Error("Key agreement key not found");
 
-    let myDidDocument = myKey.getDidDocument().toJavaScript();
+    let myDidDocument = myKey.getDidDocument()!.toJavaScript();
     // Create an encrypted message
 
     let createWalletRequest = new CreateWalletRequest()
       .setDescription("My Cloud Wallet")
-      .setController(myDidDocument["id"].toString());
+      .setController(myDidDocument["id"]!.toString());
     if (!securityCode) securityCode = "";
     createWalletRequest.setSecurityCode(securityCode);
 
@@ -113,7 +113,7 @@ export class TrinsicWalletService extends ServiceBase {
     return new Promise((resolve, reject) => {
       // Invoke create wallet using encrypted message
       // Call the server endpoint with encrypted message
-      let message = EncryptedMessage.deserializeBinary(packedMessage.getMessage().serializeBinary());
+      let message = EncryptedMessage.deserializeBinary(packedMessage.getMessage()!.serializeBinary());
 
       this.client.createWalletEncrypted(message, {}, async (error, response) => {
         if (error) {
@@ -154,7 +154,7 @@ export class TrinsicWalletService extends ServiceBase {
         if (error) {
           reject(error);
         } else {
-          resolve(response.getDocument().getJsonStruct().toJavaScript());
+          resolve(response.getDocument()!.getJsonStruct()!.toJavaScript());
         }
       });
     });
@@ -220,7 +220,7 @@ export class TrinsicWalletService extends ServiceBase {
         if (error) {
           reject(error);
         } else {
-          resolve(response.getProofDocument().getJsonStruct().toJavaScript());
+          resolve(response.getProofDocument()!.getJsonStruct()!.toJavaScript());
         }
       });
     });

@@ -5,7 +5,7 @@ import { Struct } from "google-protobuf/google/protobuf/struct_pb";
 import { Buffer } from "buffer";
 
 export default abstract class ServiceBase {
-  capInvocation: string;
+  capInvocation?: string;
 
   getMetadata(): Metadata {
     if (!this.capInvocation) throw new Error("Profile not set.");
@@ -33,7 +33,7 @@ export default abstract class ServiceBase {
 
     // Set the auth field to the signed document by converting it back
     // to JSON and encoding it in base64
-    this.capInvocation = Buffer.from(JSON.stringify(proofResponse.getSignedDocument().toJavaScript())).toString(
+    this.capInvocation = Buffer.from(JSON.stringify(proofResponse.getSignedDocument()!.toJavaScript())).toString(
       "base64"
     );
   }

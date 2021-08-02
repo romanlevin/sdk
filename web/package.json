@@ -1,7 +1,7 @@
 {
   "name": "@trinsic/trinsic-web",
-  "version": "1.0.0-preview.27",
-  "description": "verifiable credentials",
+  "version": "1.0.0-preview.27a",
+  "description": "Trinsic SDK for Browser",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
